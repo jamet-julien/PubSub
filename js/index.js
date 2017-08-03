@@ -3,11 +3,15 @@ PubSub.on('home', function(){
 });
 
 
-PubSub.on('home.start', function(){
-    console.log('start');
+var oSub1 = PubSub.on('home.start', function(){
+    console.log('start#1');
 });
 
+var oSub2 = PubSub.on('home.start', function(){
+    console.log('start#2');
+});
 
-PubSub.on('home.start.one', function(){
-    console.log('one');
+PubSub.on('home.delete', function(){
+    console.log('delete');
+    oSub1.off();
 });

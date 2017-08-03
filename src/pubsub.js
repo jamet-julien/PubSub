@@ -17,8 +17,16 @@
       function _on( type, cb) {
            _aEvent['_on' + type] = _aEvent['_on' + type] || [];
            _aEvent['_on' + type].push(cb);
-           return true;
+
+           return (function( i){
+             return {
+               off : function(){
+                 _aEvent['_on' + type].splice(i, 1);
+               }
+             }
+           })( _aEvent['_on' + type].length - 1);
        }
+
 
       /**
        * [emit description]
