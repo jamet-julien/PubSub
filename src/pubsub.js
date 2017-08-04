@@ -21,9 +21,7 @@
            return (function( i){
              return {
                off : function(){
-                 if( _aEvent['_on' + type][i]){
-                    delete _aEvent['_on' + type][i];
-                  }
+                  _aEvent['_on' + type][i] && delete _aEvent['_on' + type][i];
                }
              }
            })( _aEvent['_on' + type].length - 1);
@@ -36,7 +34,7 @@
        * @param  {[type]} args [description]
        * @return {[type]}      [description]
        */
-      function _emit(type, args) {
+      function _emit( type, args) {
 
         var  aType = type.split("."), i = 0, iLen = aType.length, _type = '';
         for(; i < iLen; i++){
