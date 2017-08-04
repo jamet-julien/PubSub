@@ -21,8 +21,8 @@
            return (function( i){
              return {
                off : function(){
-                 if( _aEvent['_on' + type][i] === cb){
-                    _aEvent['_on' + type].splice(i, 1);
+                 if( _aEvent['_on' + type][i]){
+                    delete _aEvent['_on' + type][i];
                   }
                }
              }
@@ -41,7 +41,7 @@
         var  aType = type.split("."), i = 0, iLen = aType.length, _type = '';
         for(; i < iLen; i++){
           _type += aType[ i ];
-          _aEvent['_on' + _type] && _aEvent['_on' + _type].forEach( (cb) => { cb(args) });
+          _aEvent['_on' + _type] && _aEvent['_on' + _type].forEach( (cb) => { cb && cb(args) });
           _type += '.';
         }
 
