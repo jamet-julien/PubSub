@@ -14,17 +14,28 @@
        * @param  {Function} cb   [description]
        * @return {[type]}        [description]
        */
-      function _on( type, cb) {
-           _aEvent['_on' + type] = _aEvent['_on' + type] || [];
-           _aEvent['_on' + type].push(cb);
+      function _on() {
+          var args  = [].slice.call( arguments),
+              sType = args[0],
+              cb    = args[1] || null,
+              ctx   = args[2] || win;
+
+            if( cb === null){
+              return false;
+            }
+
+           _aEvent['_on' + sType] = _aEvent['_on' + sType] || [];
+           _aEvent['_on' + sType].push({ cb:cb, ctx:ctx});
+
+           args = cb = ctx = null;
 
            return (function( i){
              return {
                off : function(){
-                  _aEvent['_on' + type][i] && delete _aEvent['_on' + type][i];
+                  _aEvent['_on' + sType][i] && delete _aEvent['_on' + sType][i];
                }
              }
-           })( _aEvent['_on' + type].length - 1);
+           })( _aEvent['_on' + sType].length - 1);
        }
 
 
@@ -34,14 +45,25 @@
        * @param  {[type]} args [description]
        * @return {[type]}      [description]
        */
-      function _emit( type, args) {
+      function _emit() {
+        var args   = [].slice.call( arguments),
+            sType  = ''+args.splice(0, 1),
+            aType  = sType.split( "/"),
+            i      = 0,
+            iLen   = aType.length,
+            _type  = '';
 
-        var  aType = type.split("."), i = 0, iLen = aType.length, _type = '';
+
+
         for(; i < iLen; i++){
           _type += aType[ i ];
-          _aEvent['_on' + _type] && _aEvent['_on' + _type].forEach( (cb) => { cb && cb(args) });
-          _type += '.';
+          _aEvent['_on' + _type] && _aEvent['_on' + _type].forEach( (o) => {
+             setTimeout( o && o.cb.apply( o.ctx, args), 0);
+           });
+          _type += '/';
         }
+
+        sType = args = aType = null;
 
         return true;
       }
