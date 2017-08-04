@@ -58,7 +58,9 @@
         for(; i < iLen; i++){
           _type += aType[ i ];
           _aEvent['_on' + _type] && _aEvent['_on' + _type].forEach( (o) => {
-             setTimeout( o && o.cb.apply( o.ctx, args), 0);
+             setTimeout( function(){
+               o && o.cb.apply( o.ctx, args);
+             }, 0);
            });
           _type += '/';
         }
