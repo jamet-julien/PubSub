@@ -21,7 +21,9 @@
            return (function( i){
              return {
                off : function(){
-                 _aEvent['_on' + type].splice(i, 1);
+                 if( _aEvent['_on' + type][i] === cb){
+                    _aEvent['_on' + type].splice(i, 1);
+                  }
                }
              }
            })( _aEvent['_on' + type].length - 1);
