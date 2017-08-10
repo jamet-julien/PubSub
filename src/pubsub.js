@@ -16,9 +16,9 @@
        */
       function _on() {
           var args  = [].slice.call( arguments),
-              sType = args[0],
-              cb    = args[1] || null,
-              ctx   = args[2] || win;
+              sType = args.shift(),
+              cb    = args.shift() || null,
+              ctx   = args.shift() || win;
 
             if( cb === null){
               return false;
@@ -38,7 +38,6 @@
            })( _aEvent['_on' + sType].length - 1);
        }
 
-
       /**
        * [emit description]
        * @param  {[type]} type [description]
@@ -46,14 +45,13 @@
        * @return {[type]}      [description]
        */
       function _emit() {
+
         var args   = [].slice.call( arguments),
-            sType  = ''+args.splice(0, 1),
+            sType  = args.shift(),
             aType  = sType.split( "/"),
             i      = 0,
             iLen   = aType.length,
             _type  = '';
-
-
 
         for(; i < iLen; i++){
           _type += aType[ i ];
@@ -66,7 +64,6 @@
         }
 
         sType = args = aType = null;
-
         return true;
       }
 
